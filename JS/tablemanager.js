@@ -62,11 +62,11 @@ function populateTable(users) {
 
         const alertCell = document.createElement("td");
         if (user.pending > 0) {
-            alertCell.innerHTML = `<form class="coin-edit">
-                                    <button type="button" id="alert">Alert</button>
-                                    <button type="button" id="copy">Copy</button>
-                                    <button type="button" id="clear">🧹</button>
-                                </form>`;
+            alertCell.innerHTML = ` <form class="coin-edit">
+                                        <button type="button" id="alert" class="coin-edit-confirm">Alert</button>
+                                        <button type="button" id="copy" class="coin-edit-confirm">Copy</button>
+                                        <button type="button" id="clear" class="coin-edit-confirm">🧹</button>
+                                    </form>`;
         } else {
             alertCell.textContent = "No Alerts";
         }
@@ -108,6 +108,8 @@ function populateTable(users) {
         copyButton.addEventListener("click", async () => {
             if (user && user.uid) {
                 navigator.clipboard.writeText(user.pending);
+                alert(`Copied ${user.pending} MooreCoins to clipboard and cleared alerts.`);
+                await updatePending(user.uid, 0);
             } else {
                 console.error("User UID is undefined", user);
             }

@@ -35,7 +35,7 @@ td {
     padding: 1rem 2rem;
     background-color: var(--primary);
     color: var(--text);
-    margin: 0 1rem;
+    margin: 0 0.25rem;
     width: auto;
     border: none;
     text-align: center;
