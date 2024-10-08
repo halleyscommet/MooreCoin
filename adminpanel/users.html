@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="../CSS/globals.css">
+        <link rel="stylesheet" href="../CSS/adminpanel.css">
+        <link rel="stylesheet" href="../CSS/users.css">
+
+        <link rel="icon" type="image/x-icon" href="../Images/favicon-admin.png">
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+        <title>MooreCoin</title>
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="header">
+                <img src="../Images/favicon-admin.png" alt="MooreCoin Logo" id="moorecoin-logo">
+                <h1 id="moorecoin">Manage Users</h1>
+            </div>
+            <div id="body">
+                <div id="sidebar">
+                    <ul id="sidebar-ul">
+                        <a href="./" class="inactive"><li id="dashboard">Dashboard</li></a>
+                        <li id="users" class="active">Users</li>
+                        <a href="settings.html" class="inactive"><li id="settings">Settings</li></a>
+                    </ul>
+                </div>
+                <div id="content">
+                    <table id="users-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>E-mail</th>
+                                <th>Hour</th>
+                                <th>MooreCoins</th>
+                                <th>!</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Table rows are added dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script src="../JS/firebaseConfig.js"></script>
+        <script src="../JS/adminpanel.js" type="module"></script>
+        <script src="../JS/tablemanager.js" type="module"></script>
+    </body>
+</html>

@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Inter:700|Poppins:400');
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: #000000;
+    --background: #f0f0f0;
+    --primary: #ff6200;
+    --secondary: #0000bd;
+    --accent: #77009e;
+    --alt-bg50: #e0e0e050;
+    --alt-bg: #e0e0e0;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #ffffff;
+    --background: #101010;
+    --primary: #ff6000;
+    --secondary: #4343ff;
+    --accent: #d763ff;
+    --alt-bg50: #20202050;
+    --alt-bg: #202020;
+  }
+}
+
+body {
+  height: 100vh;
+
+  margin: 0;
+  padding: 0;
+
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Inter";
+  font-weight: 700;
+}
+
+html {
+  font-size: 100%;
+  /* 16px */
+}
+
+h1 {
+  font-size: 4.21rem;
+  /* 67.36px */
+}
+
+h2 {
+  font-size: 3.158rem;
+  /* 50.56px */
+}
+
+h3 {
+  font-size: 2.369rem;
+  /* 37.92px */
+}
+
+h4 {
+  font-size: 1.777rem;
+  /* 28.48px */
+}
+
+h5 {
+  font-size: 1.333rem;
+  /* 21.28px */
+}
+
+small {
+  font-size: 0.75rem;
+  /* 12px */
+}

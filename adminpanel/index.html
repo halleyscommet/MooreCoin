@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+
+        <link rel="stylesheet" href="../CSS/globals.css">
+        <link rel="stylesheet" href="../CSS/adminpanel.css">
+
+        <link rel="icon" type="image/x-icon" href="../Images/favicon-admin.png">
+
+        <title>MooreCoin</title>
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="header">
+                <img src="../Images/favicon-admin.png" alt="MooreCoin Logo" id="moorecoin-logo">
+                <h1 id="moorecoin">Admin Dashboard</h1>
+            </div>
+            <div id="body">
+                <div id="sidebar">
+                    <ul id="sidebar-ul">
+                        <li id="dashboard" class="active">Dashboard</li>
+                        <a href="users.html" class="inactive"><li id="users">Users</li></a>
+                        <a href="settings.html" class="inactive"><li id="settings">Settings</li></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script src="../JS/firebaseConfig.js"></script>
+        <script src="../JS/adminpanel.js" type="module"></script>
+    </body>
+</html>

@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee+Outline&display=swap');
+
+body {
+    background-color: var(--background);
+    color: var(--text);
+
+    height: 100vh;
+
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: var(--primary);
+    color: var(--text);
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    height: clamp(10rem, 15vh, 20rem);
+
+    padding: 0 2rem;
+}
+
+#moorecoin-logo {
+    height: 100%;
+}
+
+#moorecoin {
+    font-family: "Bungee Outline", sans-serif;
+    font-style: italic;
+}
+
+#profile-picture-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#default-profile-picture {
+    height: 50%;
+}
+
+#profile-picture {
+    height: 50%;
+    border-radius: 50%;
+}
+
+#sidebar {
+    background-color: var(--alt-bg);
+    color: var(--text);
+
+    display: flex;
+    position: fixed;
+
+    flex-direction: column;
+    justify-content: flex-start;
+
+    top: clamp(10rem, 15vh, 20rem);
+
+    width: 15%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: auto;
+}
+
+#sidebar ul {
+    list-style-type: none;
+    padding: 2rem;
+    padding-top: 1rem;
+    margin: 0;
+    font-size: 1.777rem;
+}
+
+#sidebar ul li {
+    margin: 1rem 0;
+}
+
+.active {
+    color: var(--primary);
+    cursor: default;
+    font-display: bold;
+}
+
+
+a.inactive {
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#content {
+    background-color: var(--background);
+    color: var(--text);
+
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 15%;
+}
