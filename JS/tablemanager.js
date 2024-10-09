@@ -19,14 +19,6 @@ function setupRealTimeListener() {
     });
 }
 
-function updatePending(userId, newPending) {
-    const db = getFirestore();
-    const userDoc = doc(db, "users", userId);
-    return updateDoc(userDoc, {
-        pending: parseInt(newPending)
-    });
-}
-
 function populateTable(users) {
     const tableBody = document.getElementById("users-table-body");
     tableBody.innerHTML = ""; // Clear existing table rows
@@ -65,7 +57,7 @@ function populateTable(users) {
             alertCell.innerHTML = ` <form class="coin-edit">
                                         <button type="button" id="alert" class="coin-edit-confirm">Alert</button>
                                         <button type="button" id="copy" class="coin-edit-confirm">Copy</button>
-                                        <button type="button" id="clear" class="coin-edit-confirm">🧹</button>
+                                        <button type="button" id="clear-${user.uid}" class="coin-edit-confirm">🧹</button>
                                     </form>`;
         } else {
             alertCell.textContent = "No Alerts";
@@ -96,33 +88,39 @@ function populateTable(users) {
         });
 
         const alertButton = alertCell.querySelector("#alert");
-        alertButton.addEventListener("click", async () => {
-            if (user && user.uid) {
-                alert(`${user.displayName} has submitted ${user.pending} MooreCoins.`);
-            } else {
-                console.error("User UID is undefined", user);
-            }
-        });
+        if (alertButton) {
+            alertButton.addEventListener("click", async () => {
+                if (user && user.uid) {
+                    alert(`${user.displayName} has submitted ${user.pending} MooreCoins.`);
+                } else {
+                    console.error("User UID is undefined", user);
+                }
+            });
+        }
 
         const copyButton = alertCell.querySelector("#copy");
-        copyButton.addEventListener("click", async () => {
-            if (user && user.uid) {
-                navigator.clipboard.writeText(user.pending);
-                alert(`Copied ${user.pending} MooreCoins to clipboard and cleared alerts.`);
-                await updatePending(user.uid, 0);
-            } else {
-                console.error("User UID is undefined", user);
-            }
-        });
+        if (copyButton) {
+            copyButton.addEventListener("click", async () => {
+                if (user && user.uid) {
+                    navigator.clipboard.writeText(user.pending);
+                    alert(`Copied ${user.pending} MooreCoins to clipboard and cleared alerts.`);
+                    await updatePending(user.uid, 0);
+                } else {
+                    console.error("User UID is undefined", user);
+                }
+            });
+        }
 
-        const clearButton = alertCell.querySelector("#clear");
-        clearButton.addEventListener("click", async () => {
-            if (user && user.uid) {
-                await updatePending(user.uid, 0);
-            } else {
-                console.error("User UID is undefined", user);
-            }
-        });
+        const clearButton = document.getElementById(`clear-${user.uid}`);
+        if (clearButton) {
+            clearButton.addEventListener("click", async () => {
+                if (user && user.uid) {
+                    await updatePending(user.uid, 0);
+                } else {
+                    console.error("User UID is undefined", user);
+                }
+            });
+        }
     });
 }
 
@@ -139,6 +137,14 @@ async function updateHour(userId, newHour) {
     const userDoc = doc(db, "users", userId);
     await updateDoc(userDoc, {
         hour: parseInt(newHour)
+    });
+}
+
+async function updatePending(userId, newPending) {
+    const db = getFirestore();
+    const userDoc = doc(db, "users", userId);
+    return updateDoc(userDoc, {
+        pending: parseInt(newPending)
     });
 }
 
