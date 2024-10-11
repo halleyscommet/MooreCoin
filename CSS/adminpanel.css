@@ -71,8 +71,7 @@ body {
 
 #sidebar ul {
     list-style-type: none;
-    padding: 2rem;
-    padding-top: 1rem;
+    padding: 1rem 2rem 2rem 2rem;
     margin: 0;
     font-size: 1.777rem;
 }
