@@ -36,6 +36,8 @@ onAuthStateChanged(auth, async (user) => {
           pfp.style.display = "none";
           placeholder.style.display = "block";
         }
+
+        renderUserData(userData);
       }
     }
   } else {
@@ -43,3 +45,8 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "../";
   }
 });
+
+async function renderUserData(userData) {
+  const welcome = document.getElementById("welcome-text");
+  welcome.innerHTML = `Welcome, <span id="display-name">${userData.displayName}</span>!`;
+}

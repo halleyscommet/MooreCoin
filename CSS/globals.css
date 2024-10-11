@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Inter:700|Poppins:400');
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap|Poppins:400');
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -30,7 +30,7 @@ body {
   margin: 0;
   padding: 0;
 
-  font-family: "Poppins", sans-serif;
+  font-family: "Work Sans", sans-serif;
   font-weight: 400;
 }
 
@@ -39,8 +39,8 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: "Inter";
-  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
 }
 
 html {

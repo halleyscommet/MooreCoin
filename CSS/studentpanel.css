@@ -40,3 +40,30 @@ body {
     height: 50%;
     border-radius: 50%;
 }
+
+#welcome-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+#display-name {
+    color: var(--primary);
+}
+
+#balance-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+}
+
+#moorecoins {
+    color: var(--primary);
+}
+
