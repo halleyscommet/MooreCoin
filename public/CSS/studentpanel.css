@@ -75,10 +75,49 @@ body {
     color: var(--subtext);
 }
 
+.subtext {
+    color: var(--subtext);
+}
+
 #moorecoin-value-container {
     display: flex;
     justify-content: center;
     align-items: center;
 
     height: 100%;
+}
+
+#profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 2rem;
+    top: 8rem;
+    background-color: var(--alt-bg);
+    min-width: 12rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    z-index: 1;
+}
+
+#profile-dropdown.show {
+    display: block;
+}
+
+#profile-dropdown p {
+    padding-top: 0;
+}
+
+#profile-dropdown button {
+    background-color: var(--primary);
+    color: var(--text);
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+}
+
+#profile-dropdown button:hover {
+    background-color: var(--secondary);
+    transition: background-color 0.3s;
 }

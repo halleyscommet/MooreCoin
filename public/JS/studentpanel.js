@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getAuth,
+  signOut,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
@@ -67,5 +68,40 @@ async function renderUserData(userData) {
   value.innerHTML = er * userData.moorecoins;
 
   const moorecoinValue = document.getElementById("moorecoin-value");
-  moorecoinValue.innerHTML = `1 &#8776; ${er}`;
+  moorecoinValue.innerHTML = `1 &#8776; ${Number(er.toPrecision(2))}`;
+
+  const name = document.getElementById("name");
+  name.innerHTML = userData.displayName;
+
+  const email = document.getElementById("email");
+  email.innerHTML = userData.email;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const profilePicture = document.getElementById("profile-picture");
+  const dropdown = document.getElementById("profile-dropdown");
+
+  profilePicture.addEventListener("click", (event) => {
+    event.stopPropagation();
+    dropdown.classList.toggle("show");
+  });
+
+  document.addEventListener("click", (event) => {
+    if (
+      !event.target.matches(
+        "#profile-dropdown, #profile-dropdown button, #profile-dropdown p, #profile-dropdown hr"
+      )
+    ) {
+      dropdown.classList.remove("show");
+    }
+  });
+});
+
+document.getElementById("sign-out").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    window.location.href = "../";
+  } catch (error) {
+    console.error("Error signing out:", error);
+  }
+});
