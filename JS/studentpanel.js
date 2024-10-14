@@ -7,7 +7,9 @@ import {
   getFirestore,
   doc,
   getDoc,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { calculateER } from "./utils.js";
 
 const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
@@ -38,6 +40,13 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         renderUserData(userData);
+
+        // Set up real-time listener
+        onSnapshot(userDoc, (doc) => {
+          if (doc.exists()) {
+            renderUserData(doc.data());
+          }
+        });
       }
     }
   } else {
@@ -49,4 +58,14 @@ onAuthStateChanged(auth, async (user) => {
 async function renderUserData(userData) {
   const welcome = document.getElementById("welcome-text");
   welcome.innerHTML = `Welcome, <span id="display-name">${userData.displayName}</span>!`;
+
+  const moorecoins = document.getElementById("moorecoins");
+  moorecoins.innerHTML = userData.moorecoins;
+
+  const er = await calculateER();
+  const value = document.getElementById("value");
+  value.innerHTML = er * userData.moorecoins;
+
+  const moorecoinValue = document.getElementById("moorecoin-value");
+  moorecoinValue.innerHTML = `1 &#8776; ${er}`;
 }

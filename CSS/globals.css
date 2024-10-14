@@ -3,6 +3,7 @@
 @media (prefers-color-scheme: light) {
   :root {
     --text: #000000;
+    --subtext: #707070;
     --background: #f0f0f0;
     --primary: #ff6200;
     --secondary: #0000bd;
@@ -15,6 +16,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #ffffff;
+    --subtext: #707070;
     --background: #101010;
     --primary: #ff6000;
     --secondary: #4343ff;

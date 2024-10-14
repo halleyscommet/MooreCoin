@@ -56,14 +56,29 @@ body {
 
 #balance-container {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#balance-item {
+    text-align: center;
+    width: 33.3%;
+}
+
+#moorecoins,
+#value {
+    color: var(--primary);
+    text-align: center;
+}
+
+#subtext {
+    color: var(--subtext);
+}
+
+#moorecoin-value-container {
+    display: flex;
     justify-content: center;
     align-items: center;
 
     height: 100%;
 }
-
-#moorecoins {
-    color: var(--primary);
-}
-
