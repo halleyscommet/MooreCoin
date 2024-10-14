@@ -1,2 +1,4 @@
 # .gitignore
 firebaseConfig.js
+.firebase/
+serviceAccountKey.json
