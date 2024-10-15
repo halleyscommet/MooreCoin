@@ -57,9 +57,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function renderUserData(userData) {
-  const welcome = document.getElementById("welcome-text");
-  welcome.innerHTML = `Welcome, <span id="display-name">${userData.displayName}</span>!`;
-
   const moorecoins = document.getElementById("moorecoins");
   moorecoins.innerHTML = userData.moorecoins;
 
@@ -104,8 +101,4 @@ document.getElementById("sign-out").addEventListener("click", async () => {
   } catch (error) {
     console.error("Error signing out:", error);
   }
-});
-
-document.getElementById("exchange-moorecoins").addEventListener("click", () => {
-  window.location.href = "./exchange.html";
 });

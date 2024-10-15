@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
 
         <link rel="stylesheet" href="../CSS/globals.css">
-        <link rel="stylesheet" href="../CSS/studentpanel.css">
+        <link rel="stylesheet" href="../CSS/exchange.css">
 
         <link rel="icon" type="image/x-icon" href="../Images/favicon.png">
 
@@ -14,7 +14,7 @@
     <body>
         <div id="container">
             <div id="header">
-                <img src="../Images/favicon.png" alt="MooreCoin Logo" id="moorecoin-logo">
+                <a href="./" id="moorecoin-logo"><img src="../Images/favicon.png" alt="MooreCoin Logo" id="moorecoin-logo"></a>
                 <div id="profile-picture-container">
                     <svg xmlns="http://www.w3.org/2000/svg" height viewBox="0 -960 960 960"
                         fill="currentColor" id="default-profile-picture">
@@ -36,11 +36,6 @@
             </div>
 
             <div id="body">
-                <div id="welcome-container">
-                    <h2 id="welcome-text">
-                        <!-- filled dynamically -->
-                    </h2>
-                </div>
                 <div id="balance-container">
                     <div id="balance-item">
                         <h4 id="subtext">MooreCoins</h4>
@@ -64,13 +59,27 @@
                     </h5>
                 </div>
 
-                <div id="button-container">
-                    <button type="button" id="exchange-moorecoins">Exchange</button>
+                <div id="exchange-container">
+                    <h2>Exchange</h2>
+                    <div id="exchange-form">
+                        <div id="exchange-form-item">
+                            <input type="number" id="moorecoin-input" min="1" step="1" required><br>
+                            <label for="moorecoin-input">MooreCoins</label>
+                        </div>
+                        <div id="about-equal-to">
+                            <h3>&#8776;</h3>
+                        </div>
+                        <div id="exchange-form-item">
+                            <input type="number" id="value-input" min="1" step="1" required><br>
+                            <label for="value-input">Extra Credit Points</label>
+                        </div>
+                        <button type="button" id="exchange-button">Exchange</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <script src="../JS/firebaseConfig.js"></script>
-        <script src="../JS/studentpanel.js" type="module"></script>
+        <script src="../JS/exchange.js" type="module"></script>
     </body>
 </html>

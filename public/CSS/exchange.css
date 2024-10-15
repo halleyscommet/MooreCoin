@@ -41,19 +41,6 @@ body {
     border-radius: 50%;
 }
 
-#welcome-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    height: 100%;
-}
-
-#display-name {
-    color: var(--primary);
-}
-
 #balance-container {
     display: flex;
     justify-content: space-between;
@@ -123,34 +110,22 @@ body {
     transition: background-color 0.3s;
 }
 
-#button-container {
+#exchange-container {
     display: flex;
-
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     height: 100%;
 }
 
-#button-container button {
-    background-color: var(--alt-b50);
-    color: var(--text);
-
-    border: 2px solid var(--primary);
-    border-radius: 0.5rem;
-
+#moorecoin-input,
+#value-input {
     padding: 1rem 2rem;
-    margin: .5rem;
-
-    font-size: 1.777rem;
-
-    cursor: pointer;
-
-    transition: background-color 0.3s;
-}
-
-#button-container button:hover {
     background-color: var(--alt-bg);
-
-    transition: background-color 0.3s;
+    color: var(--text);
+    width: auto;
+    border: solid 1px var(--text);
+    text-align: center;
+    border-radius: 2rem;
 }
