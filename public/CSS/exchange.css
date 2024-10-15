@@ -66,14 +66,6 @@ body {
     color: var(--subtext);
 }
 
-#moorecoin-value-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    height: 100%;
-}
-
 #profile-dropdown {
     display: none;
     position: absolute;
@@ -117,6 +109,25 @@ body {
     align-items: center;
 
     height: 100%;
+
+    padding: 0;
+    margin: 0;
+}
+
+#exchange-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#exchange-form-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
 }
 
 #moorecoin-input,
@@ -128,4 +139,38 @@ body {
     border: solid 1px var(--text);
     text-align: center;
     border-radius: 2rem;
+}
+
+#button-container {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+
+    margin-top: 2rem;
+}
+
+#button-container button {
+    background-color: var(--alt-b50);
+    color: var(--text);
+
+    border: 2px solid var(--primary);
+    border-radius: 0.5rem;
+
+    padding: 1rem 2rem;
+    margin: .5rem;
+
+    font-size: 1.777rem;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+#button-container button:hover {
+    background-color: var(--alt-bg);
+
+    transition: background-color 0.3s;
 }

@@ -2,11 +2,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getFirestore,
   collection,
-  getDocs,
   doc,
   updateDoc,
   onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { calculateER } from "./utils.js";
 
 const app = initializeApp(window.firebaseConfig);
 const db = getFirestore(app);
@@ -20,6 +20,13 @@ function setupRealTimeListener() {
     }));
     populateTable(userList);
   });
+}
+
+let exchangeRate = 1;
+
+async function getExchangeRate() {
+  exchangeRate = await calculateER();
+  return exchangeRate;  
 }
 
 function populateTable(users) {
@@ -96,7 +103,7 @@ function populateTable(users) {
       alertButton.addEventListener("click", async () => {
         if (user && user.uid) {
           alert(
-            `${user.displayName} has submitted ${user.pending} MooreCoins.`
+            `${user.displayName} has submitted ${user.pending} MooreCoins (${user.pending * await getExchangeRate()} Extra Credit Points)`
           );
         } else {
           console.error("User UID is undefined", user);
@@ -108,9 +115,9 @@ function populateTable(users) {
     if (copyButton) {
       copyButton.addEventListener("click", async () => {
         if (user && user.uid) {
-          navigator.clipboard.writeText(user.pending);
+          navigator.clipboard.writeText(user.pending * await getExchangeRate());
           alert(
-            `Copied ${user.pending} MooreCoins to clipboard and cleared alerts.`
+            `Copied ${user.pending * await getExchangeRate()} Extra Credit Points to clipboard and cleared alerts.`
           );
           await updatePending(user.uid, 0);
         } else {
