@@ -79,3 +79,16 @@ small {
   font-size: 0.75rem;
   /* 12px */
 }
+
+#subtext {
+  color: var(--subtext);
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 1rem 0;
+  background-color: var(--alt-bg50);
+  text-align: center;
+}
