@@ -70,13 +70,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById(
     "total-moorecoins"
   ).textContent = `${totalMoorecoins} MooreCoins`;
-  document.getElementById("ec").textContent = `${
-    er.toFixed(1) * totalMoorecoins
-  } Extra Credit`;
+  document.getElementById("ec").textContent = `${(er * totalMoorecoins).toFixed(
+    1
+  )} Extra Credit`;
 
-  document.getElementById("exchange-rate").textContent = `1 MooreCoin = ${er.toFixed(1)} Extra Credit`;
+  document.getElementById(
+    "exchange-rate"
+  ).textContent = `1 MooreCoin = ${er.toFixed(1)} Extra Credit`;
 
-  document.getElementById("total-users").textContent = `${totalNonAdminUsers} Students`;
+  document.getElementById(
+    "total-users"
+  ).textContent = `${totalNonAdminUsers} Students`;
 
   if (userCount > 1) {
     document.getElementById("alert").textContent = `${userCount} Alerts`;

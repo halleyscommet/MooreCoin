@@ -103,7 +103,7 @@ function populateTable(users) {
       alertButton.addEventListener("click", async () => {
         if (user && user.uid) {
           alert(
-            `${user.displayName} has submitted ${user.pending} MooreCoins (${user.pending * await getExchangeRate()} Extra Credit Points)`
+            `${user.displayName} has submitted ${user.pending} MooreCoins (${(user.pending * await getExchangeRate()).toFixed(1)} Extra Credit Points)`
           );
         } else {
           console.error("User UID is undefined", user);
@@ -115,9 +115,9 @@ function populateTable(users) {
     if (copyButton) {
       copyButton.addEventListener("click", async () => {
         if (user && user.uid) {
-          navigator.clipboard.writeText(user.pending * await getExchangeRate());
+          navigator.clipboard.writeText((user.pending * await getExchangeRate()).toFixed(1));
           alert(
-            `Copied ${user.pending * await getExchangeRate()} Extra Credit Points to clipboard and cleared alerts.`
+            `Copied ${(user.pending * await getExchangeRate()).toFixed(1)} Extra Credit Points to clipboard and cleared alerts.`
           );
           await updatePending(user.uid, 0);
         } else {
