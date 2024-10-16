@@ -101,4 +101,30 @@ a.inactive {
     flex-direction: column;
 
     margin-left: 15%;
+
+    padding: 2rem;
+}
+
+#supply,
+#er,
+#users-box,
+#alerts {
+    width: 35%;
+    height: auto;
+
+    background-color: var(--alt-bg);
+
+    border: .25rem solid var(--primary);
+    border-radius: 1rem;
+
+    padding: 0rem 1rem 1rem 1rem;
+    margin-bottom: 1rem;
+}
+
+#supply h4,
+#er h4,
+#users-box h4,
+#alerts h4 {
+    margin: 0;
+    padding: 1rem 1rem 0rem 0rem;
 }

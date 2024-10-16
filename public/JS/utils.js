@@ -8,7 +8,7 @@ import {
 const app = initializeApp(window.firebaseConfig);
 const db = getFirestore(app);
 
-async function getTotalMoorecoins() {
+export async function getTotalMoorecoins() {
   const usersCollection = collection(db, "users");
   const usersSnapshot = await getDocs(usersCollection);
   let totalMoorecoins = 0;
