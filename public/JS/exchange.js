@@ -69,7 +69,7 @@ async function renderUserData(userData) {
 
   const er = await calculateER();
   const value = document.getElementById("value");
-  value.innerHTML = er * userData.moorecoins;
+  value.innerHTML = Number((er * userData.moorecoins).toFixed(1));
 
   const name = document.getElementById("name");
   name.innerHTML = userData.displayName;
@@ -92,19 +92,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Set the max attribute for both inputs
   moorecoinInput.max = availableMooreCoins;
-  valueInput.max = Number((availableMooreCoins * exchangeRate).toPrecision(2));
+  valueInput.max = Number((availableMooreCoins * exchangeRate).toFixed(1));
 
   moorecoinInput.addEventListener("input", () => {
     const moorecoins = parseFloat(moorecoinInput.value);
     if (!isNaN(moorecoins)) {
-      valueInput.value = Number((moorecoins * exchangeRate).toPrecision(2));
+      valueInput.value = Number((moorecoins * exchangeRate).toFixed(1));
     }
   });
 
   valueInput.addEventListener("input", () => {
     const value = parseFloat(valueInput.value);
     if (!isNaN(value)) {
-      moorecoinInput.value = Number((value / exchangeRate).toPrecision(2));
+      moorecoinInput.value = Number((value / exchangeRate).toFixed(1));
     }
   });
 
@@ -133,21 +133,36 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (isNaN(moorecoins) || isNaN(value)) {
       alert("Please enter a valid number.");
+      moorecoinInput.value = "";
+      valueInput.value = "";
       return;
     }
 
     if (moorecoins <= 0 || value <= 0) {
       alert("Please enter a number greater than 0.");
+      moorecoinInput.value = "";
+      valueInput.value = "";
       return;
     }
 
     if (moorecoins > availableMooreCoins) {
       alert("You do not have enough MooreCoins to make this exchange.");
+      moorecoinInput.value = "";
+      valueInput.value = "";
       return;
     }
 
     if (!Number.isInteger(moorecoins)) {
       alert("Please enter a whole number of MooreCoins.");
+      moorecoinInput.value = "";
+      valueInput.value = "";
+      return;
+    }
+
+    if (userData.pending > 0) {
+      alert("You already have a pending exchange. Please wait for it to be processed.");
+      moorecoinInput.value = "";
+      valueInput.value = "";
       return;
     }
 

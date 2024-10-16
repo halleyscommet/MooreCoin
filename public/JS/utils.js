@@ -30,5 +30,5 @@ export async function calculateER() {
     3 * (Math.pow(totalMoorecoins, 2) / 78400) +
     totalMoorecoins / 1680 +
     5 / 2;
-  return Number(er.toPrecision(2));
+  return Number(er.toFixed(1));
 }

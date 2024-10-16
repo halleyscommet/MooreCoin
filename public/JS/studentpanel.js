@@ -65,10 +65,10 @@ async function renderUserData(userData) {
 
   const er = await calculateER();
   const value = document.getElementById("value");
-  value.innerHTML = er * userData.moorecoins;
+  value.innerHTML = Number((er * userData.moorecoins).toFixed(1));
 
   const moorecoinValue = document.getElementById("moorecoin-value");
-  moorecoinValue.innerHTML = `1 &#8776; ${Number(er.toPrecision(2))}`;
+  moorecoinValue.innerHTML = `1 &#8776; ${Number(er.toFixed(1))}`;
 
   const name = document.getElementById("name");
   name.innerHTML = userData.displayName;
