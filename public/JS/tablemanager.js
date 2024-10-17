@@ -165,4 +165,83 @@ async function updatePending(userId, newPending) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   setupRealTimeListener();
+  
+  const tableHeaders = document.querySelectorAll("th");
+  tableHeaders.forEach(header => {
+    header.addEventListener("click", () => {
+      const column = header.id.split("-")[0];
+      const sortIcon = header.querySelector(".sort-icon");
+      const isAscending = sortIcon.classList.contains("asc");
+      sortTable(column, !isAscending);
+      updateSortIcons(header, !isAscending);
+    });
+  });
+
+  const addMoorecoinsButton = document.getElementById("add-moorecoins-button");
+  addMoorecoinsButton.addEventListener("click", async () => {
+    const moorecoinsInput = document.getElementById("moorecoins-input");
+    const selectedHour = getSelectedHour(); // Implement this function to get the selected hour
+    const moorecoinsAmount = parseInt(moorecoinsInput.value);
+
+    if (isNaN(moorecoinsAmount) || moorecoinsAmount <= 0) {
+      alert("Please enter a valid amount of MooreCoins.");
+      return;
+    }
+
+    const usersInHour = await getUsersInHour(selectedHour);
+    usersInHour.forEach(async (user) => {
+      const newMoorecoins = user.moorecoins + moorecoinsAmount;
+      await updateMoorecoins(user.id, newMoorecoins);
+    });
+
+    alert(`Added ${moorecoinsAmount} MooreCoins to all users in hour ${selectedHour}.`);
+  });
 });
+
+async function getUsersInHour(hour) {
+  const usersCollection = collection(db, "users");
+  const q = query(usersCollection, where("hour", "==", hour));
+  const querySnapshot = await getDocs(q);
+  const users = [];
+  querySnapshot.forEach((doc) => {
+    users.push({ id: doc.id, ...doc.data() });
+  });
+  return users;
+}
+
+function sortTable(column, ascending) {
+  const tableBody = document.querySelector("tbody");
+  const rows = Array.from(tableBody.querySelectorAll("tr"));
+  rows.sort((a, b) => {
+    let aText = a.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim();
+    let bText = b.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim();
+
+    if (column === "name") {
+      aText = getLastName(aText);
+      bText = getLastName(bText);
+    }
+
+    return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+  });
+  rows.forEach(row => tableBody.appendChild(row));
+}
+
+function getLastName(fullName) {
+  const nameParts = fullName.split(" ");
+  return nameParts[nameParts.length - 1];
+}
+
+function getColumnIndex(column) {
+  switch (column) {
+    case "name": return 1;
+    case "alert": return 5;
+    default: return 1;
+  }
+}
+
+function updateSortIcons(header, ascending) {
+  const sortIcons = document.querySelectorAll(".sort-icon");
+  sortIcons.forEach(icon => icon.classList.remove("asc", "desc"));
+  const sortIcon = header.querySelector(".sort-icon");
+  sortIcon.classList.add(ascending ? "asc" : "desc");
+}

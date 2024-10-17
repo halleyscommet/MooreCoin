@@ -15,6 +15,38 @@ td {
     text-align: center;
 }
 
+#add-coins {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
+
+#add-coins-input,
+#hour {
+    padding: 1rem 2rem;
+    margin: 0 0.25rem;
+    background-color: var(--alt-bg);
+    color: var(--text);
+    width: auto;
+    border: solid 1px var(--text);
+    text-align: center;
+    border-radius: 2rem;
+}
+
+#add-coins-button {
+    padding: 1rem 2rem;
+    background-color: var(--primary);
+    color: var(--text);
+    margin: 0 0.25rem;
+    width: auto;
+    border: none;
+    text-align: center;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 .coin-edit {
     display: flex;
     justify-content: center;
@@ -60,4 +92,15 @@ td {
     text-decoration: underline dashed;
     color: var(--text);
     transition: text-decoration 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sort-icon {
+  cursor: pointer;
+  margin-left: 5px;
+}
+.sort-icon.asc::after {
+  content: "▲";
+}
+.sort-icon.desc::after {
+  content: "▼";
 }
