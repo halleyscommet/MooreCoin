@@ -32,3 +32,9 @@ export async function calculateER() {
     5 / 2;
   return Number(er.toFixed(1));
 }
+
+export async function calculateIR() {
+  const totalMoorecoins = await getTotalMoorecoins();
+  const ir = (5 * totalMoorecoins) / 14 + 2;
+  return Number(ir.toFixed(1));
+}

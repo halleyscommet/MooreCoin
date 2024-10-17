@@ -1,0 +1,190 @@
+body {
+    background-color: var(--background);
+    color: var(--text);
+
+    height: 100vh;
+
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: var(--primary);
+    color: var(--text);
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    height: clamp(10rem, 15vh, 20rem);
+
+    padding: 0 2rem;
+}
+
+#moorecoin-logo {
+    height: 100%;
+}
+
+#profile-picture-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#default-profile-picture {
+    height: 50%;
+}
+
+#profile-picture {
+    height: 50%;
+    border-radius: 50%;
+}
+
+#profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 2rem;
+    top: 8rem;
+    background-color: var(--alt-bg);
+    min-width: 12rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    z-index: 1;
+}
+
+#profile-dropdown.show {
+    display: block;
+}
+
+#profile-dropdown p {
+    padding-top: 0;
+}
+
+#profile-dropdown button {
+    background-color: var(--primary);
+    color: var(--text);
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+#profile-dropdown button:hover {
+    background-color: var(--secondary);
+    transition: background-color 0.3s;
+}
+
+#exchange-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0;
+    margin: 0;
+}
+
+#buy-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#buy-form-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+}
+
+#buy-amount {
+    padding: 1rem 2rem;
+    background-color: var(--alt-bg);
+    color: var(--text);
+    width: auto;
+    border: solid 1px var(--text);
+    text-align: center;
+    border-radius: 2rem;
+}
+
+form button {
+    background-color: var(--alt-b50);
+    color: var(--text);
+
+    border: 2px solid var(--primary);
+    border-radius: 0.5rem;
+
+    padding: 1rem 2rem;
+    margin: .5rem;
+
+    font-size: 1.777rem;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: var(--alt-bg);
+
+    transition: background-color 0.3s;
+}
+
+#claim-bonds {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    display: none;
+}
+
+#claim-bonds button {
+    background-color: var(--alt-b50);
+    color: var(--text);
+
+    border: 2px solid var(--primary);
+    border-radius: 0.5rem;
+
+    padding: 1rem 2rem;
+    margin: .5rem;
+
+    font-size: 1.777rem;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s;
+}
+
+#claim-bonds button:hover {
+    background-color: var(--alt-bg);
+
+    transition: background-color 0.3s;
+}
+
+#bond-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    display: none;
+}

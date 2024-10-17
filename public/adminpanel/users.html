@@ -29,14 +29,26 @@
                     </ul>
                 </div>
                 <div id="content">
+                    <div id="add-coins">
+                        <select id="hour">
+                            <option value="1">1st Hour</option>
+                            <option value="2">2nd Hour</option>
+                            <option value="3">3rd Hour</option>
+                            <option value="4">4th Hour</option>
+                            <option value="5">5th Hour</option>
+                            <option value="6">6th Hour</option>
+                        </select>
+                        <input type="number" id="add-coins-input" step="1" required>
+                        <button id="add-coins-button">Add MooreCoins</button>
+                    </div>
                     <table id="users-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>E-mail</th>
-                                <th>Hour</th>
-                                <th>MooreCoins</th>
-                                <th>!</th>
+                                <th id="name-header">Name <span class="sort-icon" id="name-sort-icon">&#9650;</span></th>
+                                <th id="email-header">Email</th>
+                                <th id="hour-header">Hour <span class="sort-icon" id="hour-sort-icon">&#9650;</span></th>
+                                <th id="moorecoins-header">MooreCoins <span class="sort-icon" id="coin-sort-icon">&#9650;</span></th>
+                                <th id="alert-header">Alerts <span class="sort-icon" id="alert-sort-icon">&#9650;</span></th>
                             </tr>
                         </thead>
                         <tbody id="users-table-body">
