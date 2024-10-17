@@ -108,7 +108,8 @@ a.inactive {
 #supply,
 #er,
 #users-box,
-#alerts {
+#alerts,
+#economy-control {
     width: 35%;
     height: auto;
 
@@ -124,7 +125,8 @@ a.inactive {
 #supply h4,
 #er h4,
 #users-box h4,
-#alerts h4 {
+#alerts h4,
+#economy-control h4 {
     margin: 0;
     padding: 1rem 1rem 0rem 0rem;
 }

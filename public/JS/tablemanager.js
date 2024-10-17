@@ -5,6 +5,9 @@ import {
   doc,
   updateDoc,
   onSnapshot,
+  query,
+  where,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { calculateER } from "./utils.js";
 
@@ -26,7 +29,7 @@ let exchangeRate = 1;
 
 async function getExchangeRate() {
   exchangeRate = await calculateER();
-  return exchangeRate;  
+  return exchangeRate;
 }
 
 function populateTable(users) {
@@ -50,14 +53,14 @@ function populateTable(users) {
 
     const hourCell = document.createElement("td");
     hourCell.innerHTML = `  <form class="coin-edit">
-                                    <input type="number" class="coin-edit-input" value="${user.hour}" min="1" max="6">
+                                    <input type="number" class="coin-edit-input" value="${user.hour}" min="1" max="6" name="hour">
                                     <button type="button" class="coin-edit-confirm">Confirm</button>
                                 </form>`;
     row.appendChild(hourCell);
 
     const moorecoinsCell = document.createElement("td");
     moorecoinsCell.innerHTML = `<form class="coin-edit">
-                                        <input type="number" class="coin-edit-input" value="${user.moorecoins}">
+                                        <input type="number" class="coin-edit-input" value="${user.moorecoins}" name="moorecoins">
                                         <button type="button" class="coin-edit-confirm">Confirm</button>
                                     </form>`;
     row.appendChild(moorecoinsCell);
@@ -103,7 +106,9 @@ function populateTable(users) {
       alertButton.addEventListener("click", async () => {
         if (user && user.uid) {
           alert(
-            `${user.displayName} has submitted ${user.pending} MooreCoins (${(user.pending * await getExchangeRate()).toFixed(1)} Extra Credit Points)`
+            `${user.displayName} has submitted ${user.pending} MooreCoins (${(
+              user.pending * (await getExchangeRate())
+            ).toFixed(1)} Extra Credit Points)`
           );
         } else {
           console.error("User UID is undefined", user);
@@ -115,9 +120,13 @@ function populateTable(users) {
     if (copyButton) {
       copyButton.addEventListener("click", async () => {
         if (user && user.uid) {
-          navigator.clipboard.writeText((user.pending * await getExchangeRate()).toFixed(1));
+          navigator.clipboard.writeText(
+            (user.pending * (await getExchangeRate())).toFixed(1)
+          );
           alert(
-            `Copied ${(user.pending * await getExchangeRate()).toFixed(1)} Extra Credit Points to clipboard and cleared alerts.`
+            `Copied ${(user.pending * (await getExchangeRate())).toFixed(
+              1
+            )} Extra Credit Points to clipboard and cleared alerts.`
           );
           await updatePending(user.uid, 0);
         } else {
@@ -137,6 +146,8 @@ function populateTable(users) {
       });
     }
   });
+
+  sortTable("hour", true);
 }
 
 async function updateMoorecoins(userId, newMoorecoins) {
@@ -165,9 +176,9 @@ async function updatePending(userId, newPending) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   setupRealTimeListener();
-  
+
   const tableHeaders = document.querySelectorAll("th");
-  tableHeaders.forEach(header => {
+  tableHeaders.forEach((header) => {
     header.addEventListener("click", () => {
       const column = header.id.split("-")[0];
       const sortIcon = header.querySelector(".sort-icon");
@@ -177,26 +188,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  const addMoorecoinsButton = document.getElementById("add-moorecoins-button");
-  addMoorecoinsButton.addEventListener("click", async () => {
-    const moorecoinsInput = document.getElementById("moorecoins-input");
-    const selectedHour = getSelectedHour(); // Implement this function to get the selected hour
-    const moorecoinsAmount = parseInt(moorecoinsInput.value);
+  const addMoorecoinsButton = document.getElementById("add-coins-button");
+  if (addMoorecoinsButton) {
+    addMoorecoinsButton.addEventListener("click", async () => {
+      const moorecoinsInput = document.getElementById("add-coins-input");
+      const selectedHour = await getSelectedHour();
+      const moorecoinsAmount = parseInt(moorecoinsInput.value);
 
-    if (isNaN(moorecoinsAmount) || moorecoinsAmount <= 0) {
-      alert("Please enter a valid amount of MooreCoins.");
-      return;
-    }
+      if (isNaN(moorecoinsAmount)) {
+        alert("Please enter a valid amount of MooreCoins.");
+        return;
+      }
 
-    const usersInHour = await getUsersInHour(selectedHour);
-    usersInHour.forEach(async (user) => {
-      const newMoorecoins = user.moorecoins + moorecoinsAmount;
-      await updateMoorecoins(user.id, newMoorecoins);
+      const usersInHour = await getUsersInHour(selectedHour);
+      usersInHour.forEach(async (user) => {
+        const newMoorecoins = user.moorecoins + moorecoinsAmount;
+        await updateMoorecoins(user.id, newMoorecoins);
+      });
+
+      alert(
+        `Added ${moorecoinsAmount} MooreCoins to all users in hour ${selectedHour}.`
+      );
     });
-
-    alert(`Added ${moorecoinsAmount} MooreCoins to all users in hour ${selectedHour}.`);
-  });
+  } else {
+    console.error("Element with ID 'add-moorecoins-button' not found.");
+  }
 });
+
+async function getSelectedHour() {
+  const hourSelect = document.getElementById("hour");
+  return parseInt(hourSelect.value);
+}
 
 async function getUsersInHour(hour) {
   const usersCollection = collection(db, "users");
@@ -213,17 +235,33 @@ function sortTable(column, ascending) {
   const tableBody = document.querySelector("tbody");
   const rows = Array.from(tableBody.querySelectorAll("tr"));
   rows.sort((a, b) => {
-    let aText = a.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim();
-    let bText = b.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent.trim();
+    let aText = a
+      .querySelector(`td:nth-child(${getColumnIndex(column)})`)
+      .textContent.trim();
+    let bText = b
+      .querySelector(`td:nth-child(${getColumnIndex(column)})`)
+      .textContent.trim();
 
     if (column === "name") {
       aText = getLastName(aText);
       bText = getLastName(bText);
     }
 
+    if (column === "hour") {
+      aText = parseInt(a.querySelector('input[name="hour"]').value);
+      bText = parseInt(b.querySelector('input[name="hour"]').value);
+      return ascending ? aText - bText : bText - aText;
+    }
+
+    if (column === "moorecoins") {
+      aText = parseInt(a.querySelector('input[name="moorecoins"]').value);
+      bText = parseInt(b.querySelector('input[name="moorecoins"]').value);
+      return ascending ? aText - bText : bText - aText;
+    }
+
     return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
   });
-  rows.forEach(row => tableBody.appendChild(row));
+  rows.forEach((row) => tableBody.appendChild(row));
 }
 
 function getLastName(fullName) {
@@ -233,15 +271,22 @@ function getLastName(fullName) {
 
 function getColumnIndex(column) {
   switch (column) {
-    case "name": return 1;
-    case "alert": return 5;
-    default: return 1;
+    case "name":
+      return 1;
+    case "hour":
+      return 3;
+    case "moorecoins":
+      return 4;
+    case "alert":
+      return 5;
+    default:
+      return 3;
   }
 }
 
 function updateSortIcons(header, ascending) {
   const sortIcons = document.querySelectorAll(".sort-icon");
-  sortIcons.forEach(icon => icon.classList.remove("asc", "desc"));
+  sortIcons.forEach((icon) => icon.classList.remove("asc", "desc"));
   const sortIcon = header.querySelector(".sort-icon");
   sortIcon.classList.add(ascending ? "asc" : "desc");
 }

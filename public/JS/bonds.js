@@ -11,7 +11,7 @@ import {
   onSnapshot,
   updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { calculateER } from "./utils.js";
+import { calculateER, calculateIR } from "./utils.js";
 
 const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
@@ -64,13 +64,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function renderUserData(userData) {
-  const moorecoins = document.getElementById("moorecoins");
-  moorecoins.innerHTML = userData.moorecoins;
-
-  const er = await calculateER();
-  const value = document.getElementById("value");
-  value.innerHTML = Number((er * userData.moorecoins).toFixed(1));
-
   const name = document.getElementById("name");
   name.innerHTML = userData.displayName;
 
@@ -80,9 +73,9 @@ async function renderUserData(userData) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await updateExchangeRate();
+  await checkForBond();
 
-  const moorecoinInput = document.getElementById("moorecoin-input");
-  const valueInput = document.getElementById("value-input");
+  const buyAmount = document.getElementById("buy-amount");
 
   // Fetch user data to get available MooreCoins
   const user = auth.currentUser;
@@ -90,23 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const userData = userDoc.data();
   const availableMooreCoins = userData.moorecoins;
 
-  // Set the max attribute for both inputs
-  moorecoinInput.max = availableMooreCoins;
-  valueInput.max = Number((availableMooreCoins * exchangeRate).toFixed(1));
-
-  moorecoinInput.addEventListener("input", () => {
-    const moorecoins = parseFloat(moorecoinInput.value);
-    if (!isNaN(moorecoins)) {
-      valueInput.value = Number((moorecoins * exchangeRate).toFixed(1));
-    }
-  });
-
-  valueInput.addEventListener("input", () => {
-    const value = parseFloat(valueInput.value);
-    if (!isNaN(value)) {
-      moorecoinInput.value = Number((value / exchangeRate).toFixed(1));
-    }
-  });
+  buyAmount.max = availableMooreCoins;
 
   const profilePicture = document.getElementById("profile-picture");
   const dropdown = document.getElementById("profile-dropdown");
@@ -126,59 +103,56 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  const exchangeButton = document.getElementById("exchange-button");
-  exchangeButton.addEventListener("click", async () => {
-    const moorecoins = parseFloat(moorecoinInput.value);
-    const value = parseFloat(valueInput.value);
+  const buyButton = document.getElementById("buy-submit");
+  buyButton.addEventListener("click", async () => {
+    const buyAmount1 = parseFloat(buyAmount.value);
 
-    if (isNaN(moorecoins) || isNaN(value)) {
+    if (isNaN(buyAmount1)) {
       alert("Please enter a valid number.");
-      moorecoinInput.value = "";
-      valueInput.value = "";
+      buyAmount.value = "";
       return;
     }
 
-    if (moorecoins <= 0 || value <= 0) {
+    if (buyAmount1 <= 0) {
       alert("Please enter a number greater than 0.");
-      moorecoinInput.value = "";
-      valueInput.value = "";
+      buyAmount.value = "";
       return;
     }
 
-    if (moorecoins > availableMooreCoins) {
+    if (buyAmount1 > availableMooreCoins) {
       alert("You do not have enough MooreCoins to make this exchange.");
-      moorecoinInput.value = "";
-      valueInput.value = "";
+      buyAmount.value = "";
       return;
     }
 
-    if (!Number.isInteger(moorecoins)) {
+    if (!Number.isInteger(buyAmount1)) {
       alert("Please enter a whole number of MooreCoins.");
-      moorecoinInput.value = "";
-      valueInput.value = "";
+      buyAmount.value = "";
       return;
     }
 
-    if (userData.pending > 0) {
-      alert("You already have a pending exchange. Please wait for it to be processed.");
-      moorecoinInput.value = "";
-      valueInput.value = "";
+    if (userData.bondExpiry > new Date().getTime()) {
+      alert("You already have an active bond.");
+      buyAmount.value = "";
       return;
     }
 
-    updatePending(user.uid, userData.pending + moorecoins);
-    updateMoorcoins(user.uid, userData.moorecoins - moorecoins);
+    updateMoorcoins(user.uid, availableMooreCoins - buyAmount1);
+    updateBonds(user.uid, buyAmount1);
 
-    moorecoinInput.value = "";
-    valueInput.value = "";
+    buyAmount.value = "";
   });
 });
 
-async function updatePending(userId, newPending) {
+async function updateBonds(userId, newBond) {
   const db = getFirestore();
   const userDoc = doc(db, "users", userId);
+  const bondInfoDiv = document.getElementById("bond-info");
+  bondInfoDiv.style.display = "block";
   return updateDoc(userDoc, {
-    pending: parseInt(newPending),
+    bond: parseInt(newBond),
+    bondExpiry: new Date().getTime() + 1209600000, // 14 days
+    bondInterestRate: await calculateIR(),
   });
 }
 
@@ -190,6 +164,55 @@ async function updateMoorcoins(userId, newMoorecoins) {
   });
 }
 
+async function checkForBond() {
+  const user = auth.currentUser;
+  const userRef = doc(db, "users", user.uid); // Get the DocumentReference
+  const userDoc = await getDoc(userRef); // Get the DocumentSnapshot
+  const userData = userDoc.data();
+
+  if (userData.bond !== 0 && userData.bondExpiry !== 0) {
+    if (userData.bondExpiry <= new Date().getTime()) {
+      const claimBondsDiv = document.getElementById("claim-bonds");
+      claimBondsDiv.style.display = "block";
+
+      const claimButton = document.getElementById("claim-bonds-button");
+      claimButton.addEventListener("click", async () => {
+        const newMoorecoins =
+          userData.moorecoins + userData.bond * (1 + userData.bondInterestRate);
+        updateMoorcoins(user.uid, newMoorecoins);
+        updateDoc(userRef, {
+          // Use the DocumentReference here
+          bond: 0,
+          bondExpiry: 0,
+          bondInterestRate: 0,
+        });
+
+        claimBondsDiv.style.display = "none";
+      });
+    } else if (userData.bondExpiry > new Date().getTime()) {
+      const bondInfoDiv = document.getElementById("bond-info");
+      bondInfoDiv.style.display = "block";
+
+      const bondAmount = document.getElementById("bond-amount");
+      bondAmount.innerHTML = `${userData.bond} MooreCoin(s)`;
+
+      const bondExpiry = document.getElementById("bond-expiry");
+      bondExpiry.innerHTML = `Expires on ${new Date(
+        userData.bondExpiry
+      ).toLocaleString()} (14 days)`;
+
+      const bondInterestRate = document.getElementById("bond-interest-rate");
+      bondInterestRate.innerHTML = `${
+        userData.bondInterestRate
+      } Interest Rate - Returns ${
+        userData.bond * (1 + userData.bondInterestRate)
+      } MooreCoin(s)`;
+    } else {
+      console.log("user has no bond");
+    }
+  }
+}
+
 document.getElementById("sign-out").addEventListener("click", async () => {
   try {
     await signOut(auth);
@@ -198,4 +221,3 @@ document.getElementById("sign-out").addEventListener("click", async () => {
     console.error("Error signing out:", error);
   }
 });
-

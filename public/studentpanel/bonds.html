@@ -36,37 +36,23 @@
             </div>
 
             <div id="body">
-                <div id="balance-container">
-                    <div id="balance-item">
-                        <h4 id="subtext">MooreCoins</h4>
-                        <h3 id="moorecoins">
-                            <!-- filled dynamically -->
-                        </h3>
-                    </div>
-                    <h3 id="balance-item">
-                        &#8776;
-                    </h3>
-                    <div id="balance-item">
-                        <h4 id="subtext">Extra Credit Points</h4>
-                        <h3 id="value">
-                            <!-- filled dynamically -->
-                        </h3>
-                    </div>
-                </div>
-
                 <div id="exchange-container">
-                    <div id="exchange-form">
-                        <div id="exchange-form-item">
-                            <input type="number" id="moorecoin-input" min="1" step="1" required><br>
-                            <label for="moorecoin-input">MooreCoins</label>
-                        </div>
-                        <div id="exchange-form-item">
-                            <input type="number" id="value-input" min="1" step="1" required><br>
-                            <label for="value-input">Extra Credit Points</label>
-                        </div>
+                    <div id="buy-form">
+                        <form id="buy-form-item">
+                            <h2>Amount</h2>
+                            <input type="number" id="buy-amount" name="buy-amount" min="1" required>
+                            <button type="button" id="buy-submit">Buy</button>
+                        </form>
                     </div>
-                    <div id="button-container">
-                        <button type="button" id="buy-bonds-button">Buy Bonds</button>
+                    <div id="claim-bonds">
+                        <h2>Claim Bonds</h2>
+                        <button type="button" id="claim-bonds-button">Claim</button>
+                    </div>
+                    <div id="bond-info">
+                        <h2>Bond Information</h2>
+                        <h4 id="bond-amount"></h4>
+                        <h4 id="bond-expiry"></h4>
+                        <h4 id="bond-interest-rate"></h4>
                     </div>
                 </div>
 

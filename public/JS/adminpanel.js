@@ -11,6 +11,8 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getTotalMoorecoins, calculateER } from "./utils.js";
 
@@ -18,22 +20,24 @@ const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+let cachedUserData = null;
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const userDoc = doc(db, "users", user.uid);
-    const docSnap = await getDoc(userDoc);
-
-    if (!docSnap.exists()) {
-      window.location.href = "../";
-    } else {
-      const userData = docSnap.data();
-      if (!userData.admin) {
-        console.log("User is not an admin.");
-        window.location.href = "../studentpanel/";
+    onSnapshot(userDoc, (docSnap) => {
+      if (!docSnap.exists()) {
+        window.location.href = "../";
       } else {
-        console.log("User is an admin.");
+        cachedUserData = docSnap.data();
+        if (!cachedUserData.admin) {
+          console.log("User is not an admin.");
+          window.location.href = "../studentpanel/";
+        } else {
+          console.log("User is an admin.");
+        }
       }
-    }
+    });
   } else {
     console.log("No user signed in.");
     window.location.href = "../";
@@ -95,5 +99,37 @@ document.addEventListener("DOMContentLoaded", async () => {
     const listItem = document.createElement("li");
     listItem.textContent = `${user.displayName}`;
     alertList.appendChild(listItem);
+  });
+
+  const supplyInput = document.getElementById("to-increase");
+  const updateButton = document.getElementById("update");
+
+  supplyInput.value = totalMoorecoins;
+
+  updateButton.addEventListener("click", async () => {
+    const newSupply = parseInt(supplyInput.value);
+
+    console.log("Supply Input Value:", supplyInput.value);
+    console.log("Parsed New Supply:", newSupply);
+    console.log("User Data:", cachedUserData);
+    console.log(
+      "User Data MooreCoins:",
+      cachedUserData ? cachedUserData.moorecoins : "undefined"
+    );
+
+    if (isNaN(newSupply)) {
+      alert("Please enter a valid amount of MooreCoins.");
+      return;
+    }
+
+    if (cachedUserData && cachedUserData.moorecoins !== undefined) {
+      await updateDoc(doc(db, "users", auth.currentUser.uid), {
+        moorecoins: cachedUserData.moorecoins + (newSupply - totalMoorecoins),
+      });
+    } else {
+      alert("User data is missing MooreCoins field.");
+    }
+
+    window.location.reload();
   });
 });

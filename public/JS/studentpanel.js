@@ -109,3 +109,7 @@ document.getElementById("sign-out").addEventListener("click", async () => {
 document.getElementById("exchange-moorecoins").addEventListener("click", () => {
   window.location.href = "./exchange.html";
 });
+
+document.getElementById("buy-bonds").addEventListener("click", () => {
+  window.location.href = "./bonds.html";
+});
