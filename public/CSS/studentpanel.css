@@ -39,6 +39,7 @@ body {
 #profile-picture {
     height: 50%;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 #welcome-container {
