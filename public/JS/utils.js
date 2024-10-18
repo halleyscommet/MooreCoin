@@ -29,7 +29,7 @@ export async function calculateER() {
     Math.pow(totalMoorecoins, 3) / 16464000 -
     3 * (Math.pow(totalMoorecoins, 2) / 78400) +
     totalMoorecoins / 1680 +
-    5 / 2;
+    1.8;
   return Number(er.toFixed(1));
 }
 
