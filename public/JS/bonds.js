@@ -178,7 +178,7 @@ async function checkForBond() {
       const claimButton = document.getElementById("claim-bonds-button");
       claimButton.addEventListener("click", async () => {
         const newMoorecoins =
-          userData.moorecoins + userData.bond * (1 + userData.bondInterestRate);
+          userData.moorecoins + (userData.bond * (userData.bondInterestRate / 100));
         updateMoorcoins(user.uid, newMoorecoins);
         updateDoc(userRef, {
           // Use the DocumentReference here
@@ -202,11 +202,9 @@ async function checkForBond() {
       ).toLocaleString()} (14 days)`;
 
       const bondInterestRate = document.getElementById("bond-interest-rate");
-      bondInterestRate.innerHTML = `${
-        userData.bondInterestRate
-      } Interest Rate - Returns ${
-        userData.bond * (1 + userData.bondInterestRate)
-      } MooreCoin(s)`;
+      bondInterestRate.innerHTML = `${userData.bondInterestRate
+        }% Interest Rate - Returns ${(userData.bond * (userData.bondInterestRate / 100))
+        } MooreCoins`;
     } else {
       console.log("user has no bond");
     }
