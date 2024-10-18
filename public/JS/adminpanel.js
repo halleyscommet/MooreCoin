@@ -14,7 +14,7 @@ import {
   updateDoc,
   onSnapshot,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getTotalMoorecoins, calculateER } from "./utils.js";
+import { getTotalMoorecoins, calculateER, calculateIR } from "./utils.js";
 
 const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
@@ -81,6 +81,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById(
     "exchange-rate"
   ).textContent = `1 MooreCoin = ${er.toFixed(1)} Extra Credit`;
+
+  document.getElementById(
+    "interest-rate"
+  ).textContent = `${await calculateIR() / 100}%`;
 
   document.getElementById(
     "total-users"
