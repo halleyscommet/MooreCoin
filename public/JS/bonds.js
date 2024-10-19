@@ -178,7 +178,8 @@ async function checkForBond() {
       const claimButton = document.getElementById("claim-bonds-button");
       claimButton.addEventListener("click", async () => {
         const newMoorecoins =
-          userData.moorecoins + (userData.bond * (userData.bondInterestRate / 100));
+          userData.moorecoins +
+          userData.bond * (userData.bondInterestRate / 100);
         updateMoorcoins(user.uid, newMoorecoins);
         updateDoc(userRef, {
           // Use the DocumentReference here
@@ -197,14 +198,27 @@ async function checkForBond() {
       bondAmount.innerHTML = `${userData.bond} MooreCoin(s)`;
 
       const bondExpiry = document.getElementById("bond-expiry");
-      bondExpiry.innerHTML = `Expires on ${new Date(
-        userData.bondExpiry
-      ).toLocaleString()} (14 days)`;
+      const expiryDate = new Date(userData.bondExpiry);
+      const now = new Date();
+      const timeDiff = expiryDate - now;
+
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+
+      bondExpiry.innerHTML = `Expires on ${expiryDate.toLocaleDateString()} ${expiryDate.toLocaleTimeString(
+        [],
+        { hour: "2-digit", minute: "2-digit" }
+      )} (${days} days, ${hours} hours, ${minutes} minutes)`;
 
       const bondInterestRate = document.getElementById("bond-interest-rate");
-      bondInterestRate.innerHTML = `${userData.bondInterestRate
-        }% Interest Rate - Returns ${(userData.bond * (userData.bondInterestRate / 100))
-        } MooreCoins`;
+      bondInterestRate.innerHTML = `${
+        userData.bondInterestRate
+      }% Interest Rate - Returns ${
+        userData.bond * (userData.bondInterestRate / 100)
+      } MooreCoins`;
     } else {
       console.log("user has no bond");
     }
